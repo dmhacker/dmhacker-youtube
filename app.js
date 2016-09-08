@@ -13,7 +13,7 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
-app.get('/proxy', proxy('www.google.com'));
+app.use('/proxy', proxy('www.google.com'));
 
 /*
 app.get('/site/:b64url', function(req, res) {
