@@ -1,0 +1,27 @@
+{
+    "name": "dmhacker-proxy",
+    "version": "0.0.1",
+    "description": "Custom proxy server",
+    "engines": {
+        "node": "5.9.1"
+    },
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "ejs": "2.4.1",
+        "express": "4.13.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dmhacker/dmhacker-proxy"
+    },
+    "keywords": [
+        "node",
+        "heroku",
+        "express",
+        "proxy"
+    ],
+    "license": "MIT"
+}
