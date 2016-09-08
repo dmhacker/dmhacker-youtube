@@ -13,10 +13,9 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
-app.use('/proxy', proxy('www.google.com'));
-
 app.get('/site/:b64url', function(req, res) {
     var website = new Buffer(req.params.b64url, 'base64').toString('ascii');
+    console.log(website);
     return proxy(website)(req, res);
 });
 
