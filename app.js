@@ -1,6 +1,6 @@
 var express = require('express');
 var proxy = require('express-http-proxy');
-var validUrl = require('valid-url');
+var urlExists = require('url-exists');
 
 var app = express();
 
@@ -15,31 +15,16 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
-var checkUrlExists = function(urlObject, callback) {
-    var http = require('http'),
-        url = require('url');
-    var options = {
-        method: 'HEAD',
-        host: url.parse(urlObject).host,
-        port: 80,
-        path: url.parse(urlObject).pathname
-    };
-    var req = http.request(options, function(r) {
-        callback(r.statusCode == 200);
-    });
-    req.end();
-}
-
 // Where the magic happens
 app.get('/site/:b64url', function(req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
     if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
         rawUrl = 'http://' + rawUrl;
     }
-    var urlObject = require('url').parse(rawUrl);
-    var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
-    checkUrlExists(urlObject, function(exists) {
+    urlExists(rawUrl, function(exists) {
         if (exists) {
+            var urlObject = require('url').parse(rawUrl);
+            var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
             proxy(urlHost, {
                 forwardPath: function(req, res) {
                     return urlObject.path;
