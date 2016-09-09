@@ -18,9 +18,8 @@ app.get('/', function(request, response) {
 app.get('/site/:b64url', function (req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
     if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
-        rawUrl += 'http://';
+        rawUrl = 'http://' + rawUrl;
     }
-    console.log('Proxing: '+rawUrl);
     var urlObject = require('url').parse(rawUrl);
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
     proxy(urlHost, {
