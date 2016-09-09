@@ -1,5 +1,6 @@
 var express = require('express');
 var proxy = require('express-http-proxy');
+var validUrl = require('valid-url');
 
 var app = express();
 
@@ -17,6 +18,10 @@ app.get('/', function(request, response) {
 // Where the magic happens
 app.get('/site/:b64url', function (req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
+    if (!validUrl.isUri(suspect)){
+        res.render('index');
+        return;
+    }
     if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
         rawUrl = 'http://' + rawUrl;
     }
