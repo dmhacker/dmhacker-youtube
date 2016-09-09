@@ -18,6 +18,8 @@ app.get('/', function(request, response) {
 app.get('/site/:b64url', function (req, res) {
     var urlObject = require('url').parse(new Buffer(req.params.b64url, 'base64').toString('ascii'));
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
+    console.log(urlHost);
+    console.log(urlObject.path);
     proxy(urlHost, {
         forwardPath: function(req, res) {
             return urlObject.path;
