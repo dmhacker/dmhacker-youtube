@@ -18,7 +18,7 @@ app.get('/', function(request, response) {
 // Where the magic happens
 app.get('/site/:b64url', function (req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
-    if (!validUrl.isUri(suspect)){
+    if (!validUrl.isUri(rawUrl)){
         res.render('index');
         return;
     }
