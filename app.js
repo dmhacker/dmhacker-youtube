@@ -30,7 +30,8 @@ app.get('/site/:b64url', function (req, res) {
             console.log(preq.bodyContent);
             preq.bodyContent = preq.bodyContent.replace('Home', 'lol');
             return preq;
-        }
+        },
+        preserveHostHdr: true
     })(req, res);
 });
 
