@@ -19,11 +19,10 @@ app.get('/', function(request, response) {
 app.get('/site/:b64url', function(req, res) {
     var website = new Buffer(req.params.b64url, 'base64').toString('ascii');
     req.url = website;
-    proxy.web(req, res, {
-        target: 'http://localhost:8080'
-    });
+    proxy.web(req, res);
 });
 
+/*
 http.createServer(function(req, res) {
     res.writeHead(200, {
         'Content-Type': 'text/plain'
@@ -31,6 +30,7 @@ http.createServer(function(req, res) {
     res.write('request successfully proxied to: ' + req.url + '\n' + JSON.stringify(req.headers, true, 2));
     res.end();
 }).listen(8080);
+*/
 
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
