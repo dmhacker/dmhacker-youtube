@@ -18,12 +18,12 @@ app.get('/', function(request, response) {
 // Where the magic happens
 app.get('/site/:b64url', function (req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
+    if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+        rawUrl = 'http://' + rawUrl;
+    }
     if (!validUrl.isUri(rawUrl)){
         res.render('index');
         return;
-    }
-    if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
-        rawUrl = 'http://' + rawUrl;
     }
     var urlObject = require('url').parse(rawUrl);
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
