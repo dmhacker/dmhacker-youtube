@@ -1,3 +1,4 @@
+/*
 var http = require('http'),
     httpProxy = require('http-proxy');
 //
@@ -17,8 +18,8 @@ http.createServer(function(req, res) {
     res.write('request successfully proxied!' + '\n' + JSON.stringify(req.headers, true, 2));
     res.end();
 }).listen(app.get('port'));
+*/
 
-/*
 var express = require('express');
 var proxy = require('express-http-proxy');
 var urlExists = require('url-exists');
@@ -72,4 +73,3 @@ app.get('/site/:b64url', function(req, res) {
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
-*/
