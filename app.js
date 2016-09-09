@@ -21,7 +21,7 @@ app.get('/site/:b64url', function(req, res) {
     if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
         rawUrl = 'http://' + rawUrl;
     }
-    urlExists(rawUrl, function(exists) {
+    urlExists(rawUrl, function(err, exists) {
         if (exists) {
             var urlObject = require('url').parse(rawUrl);
             var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
