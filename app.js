@@ -1,6 +1,5 @@
 var express = require('express');
-var http = require('http');
-var httpProxy = require('http-proxy');
+var http = require('express-http-proxy');
 
 var app = express();
 var proxy = httpProxy.createProxyServer();
@@ -16,11 +15,11 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
-app.get('/site/:b64url', function(req, res) {
-    var website = new Buffer(req.params.b64url, 'base64').toString('ascii');
-    req.url = website;
-    proxy.web(req, res);
-});
+app.get('/site/:b64url', proxy('www.google.com', {
+    forwardPath: function(req, res) {
+        return require('url').parse(new Buffer(req.params.b64url, 'base64').toString('ascii')).path;
+    }
+}));
 
 /*
 http.createServer(function(req, res) {
