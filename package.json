@@ -12,7 +12,8 @@
     "dependencies": {
         "ejs": "2.4.1",
         "express": "4.13.3",
-        "express-http-proxy": "0.10.0"
+        "express-http-proxy": "0.10.0",
+        "valid-url": "1.0.9" 
     },
     "repository": {
         "type": "git",
