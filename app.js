@@ -20,7 +20,7 @@ app.get('/site/:b64url', function (req, res) {
     if (rawUrl.substring(0, 7) !== 'http://' && rawUrl.substring(0, 8) !== 'https://') {
         rawUrl += 'http://';
     }
-    var urlObject = require('url').parse(website);
+    var urlObject = require('url').parse(rawUrl);
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
     console.log(new Buffer(req.params.b64url, 'base64').toString('ascii'));
     console.log(urlObject);
