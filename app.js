@@ -27,8 +27,8 @@ app.get('/site/:b64url', function (req, res) {
             return urlObject.path;
         },
         decorateRequest: function (preq, req) {
-            console.log(preq.bodyContent);
-            preq.bodyContent = preq.bodyContent.replace('Home', 'lol');
+            console.log(req);
+            console.log(preq);
             return preq;
         }
     })(req, res);
