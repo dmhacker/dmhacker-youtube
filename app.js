@@ -22,13 +22,13 @@ app.get('/site/:b64url', function (req, res) {
     }
     var urlObject = require('url').parse(rawUrl);
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
-    console.log(new Buffer(req.params.b64url, 'base64').toString('ascii'));
-    console.log(urlObject);
-    console.log(urlHost);
-    console.log(urlObject.path);
     proxy(urlHost, {
         forwardPath: function(req, res) {
             return urlObject.path;
+        },
+        decorateRequest: function (preq, req) {
+            preq.bodyContent = preq.bodyContent.replace('Home', 'lol');
+            return preq;
         }
     })(req, res);
 });
