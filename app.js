@@ -16,13 +16,17 @@ app.get('/', function(request, response) {
 
 // Where the magic happens
 app.get('/site/:b64url', function (req, res) {
-    var urlObject = require('url').parse(new Buffer(req.params.b64url, 'base64').toString('ascii'));
+    var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
+    if (rawUrl.substring(0, 7) !== 'http://' && rawUrl.substring(0, 8) !== 'https://') {
+        rawUrl += 'http://';
+    }
+    var urlObject = require('url').parse(website);
     var urlHost = urlObject.protocol + (urlObject.slashes ? '//' : '') + urlObject.host;
     console.log(new Buffer(req.params.b64url, 'base64').toString('ascii'));
     console.log(urlObject);
     console.log(urlHost);
     console.log(urlObject.path);
-    proxy(urlObject.path, {
+    proxy(urlHost, {
         forwardPath: function(req, res) {
             return urlObject.path;
         }
