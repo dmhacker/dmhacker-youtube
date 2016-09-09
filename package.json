@@ -13,7 +13,8 @@
         "ejs": "2.4.1",
         "express": "4.13.3",
         "express-http-proxy": "0.10.0",
-        "url-exists": "1.0.3"
+        "url-exists": "1.0.3",
+        "node-http-proxy": "1.14.0";
     },
     "repository": {
         "type": "git",
