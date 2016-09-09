@@ -15,6 +15,18 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
+app.get('/exists/:b64url', function (req, res) {
+    var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
+    if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+        rawUrl = 'http://' + rawUrl;
+    }
+    urlExists(rawUrl, function (err, exists) {
+        res.status(200).json({
+            exists: exists
+        });
+    });
+});
+
 // Where the magic happens
 app.get('/site/:b64url', function(req, res) {
     var rawUrl = new Buffer(req.params.b64url, 'base64').toString('ascii');
