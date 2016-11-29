@@ -69,7 +69,16 @@
                 <div class="card">
                     <div class="card-content red-text">
                         <span class="card-title">History</span>
-                        <li ng-repeat="historyItem in history">{{historyItem.id}} - {{historyItem.title}}</li>
+                        <div class="row">
+                            <div class="col s12">
+                                <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <button class="waves-effect waves-light btn red" ng-click="clear()">Clear</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
