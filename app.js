@@ -19,10 +19,9 @@ app.get('/', function(request, response) {
 
 app.get('/target/:id', function (req, res) {
     var id = req.params.id;
-    var link = 'site/'+id;
-    ytdl('http://www.youtube.com/watch?v='+id).pipe(fs.createWriteStream(link));
+    ytdl('http://www.youtube.com/watch?v='+id).pipe(fs.createWriteStream(fs.join(__dirname, 'public', 'site', id)));
     res.status(200).json({
-        link: '/'+link
+        link: '/site/'+id
     });
 });
 
