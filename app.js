@@ -2,6 +2,7 @@
 
 var express = require('express');
 var fs = require('fs');
+var path = require('path');
 var ytdl = require('ytdl-core');
 
 var app = express();
@@ -19,7 +20,7 @@ app.get('/', function(request, response) {
 
 app.get('/target/:id', function (req, res) {
     var id = req.params.id;
-    ytdl('http://www.youtube.com/watch?v='+id).pipe(fs.createWriteStream(fs.join(__dirname, 'public', 'site', id)));
+    ytdl('http://www.youtube.com/watch?v='+id).pipe(fs.createWriteStream(path.join(__dirname, 'public', 'site', id)));
     res.status(200).json({
         link: '/site/'+id
     });
