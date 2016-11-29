@@ -7,6 +7,11 @@ var ytdl = require('ytdl-core');
 
 var app = express();
 
+var dir = './public/site';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
