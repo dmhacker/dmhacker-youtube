@@ -39,26 +39,24 @@
 </head>
 
 <body ng-controller="ProxyController">
-    <div class="container">
-        <div class="main-container valign-wrapper">
-            <div class="row valign">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-content red-text">
-                            <form ng-submit="go()">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input ng-model="yt" id="yt" type="text" class="validate" required>
-                                        <label for="yt">Video ID</label>
-                                    </div>
+    <div class="container main-container valign-wrapper">
+        <div class="row valign center" style="width: 100%">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <form ng-submit="go()">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input ng-model="yt" id="yt" type="text" class="validate" required>
+                                    <label for="yt">Video ID</label>
                                 </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <button type="submit" class="waves-effect waves-light btn red">Go</button>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <button type="submit" class="waves-effect waves-light btn red">Go</button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
