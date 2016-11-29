@@ -41,10 +41,15 @@
 <body ng-controller="ProxyController">
     <div class="container main-container valign-wrapper">
         <div class="row valign" style="width: 100%">
-            <div class="col s12">
+            <div class="col s12" ng-show="loading">
+                <div class="progress">
+                    <div class="indeterminate"></div>
+                </div>
+            </div>
+            <div class="col s12" ng-hide="loading">
                 <div class="card">
                     <div class="card-content red-text">
-                        <form ng-submit="go()">
+                        <form ng-submit="view()">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input ng-model="yt" id="yt" type="text" class="validate" required>

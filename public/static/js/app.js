@@ -1,8 +1,10 @@
 var app = angular.module('Proxy', []);
 
 app.controller('ProxyController', function($scope, $http) {
+    $scope.loading = false;
 
-    $scope.go = function () {
+    $scope.view = function () {
+        $scope.loading = true;
         var id = $scope.yt;
         $http({
             method: 'GET',
@@ -14,8 +16,10 @@ app.controller('ProxyController', function($scope, $http) {
             else {
                 Materialize.toast('That video does not exist!', 4000);
             }
+            $scope.loading = false;
         }, function (resp) {
             Materialize.toast(resp.data.message || 'An error occurred during processing.', 4000);
+            $scope.loading = false;
         });
     };
 });
