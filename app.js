@@ -27,10 +27,11 @@ app.get('/target/:id', function (req, res) {
     var id = req.params.id;
     var old_url = 'http://www.youtube.com/watch?v='+id;
     var new_url = path.join(__dirname, 'public', 'site', id+'.mp4');
-    console.log(new_url);
-    ytdl(old_url).pipe(fs.createWriteStream(new_url));
-    res.status(200).json({
-        link: '/site/'+id+'.mp4'
+    var writeable = ytdl(old_url).pipe(fs.createWriteStream(new_url));
+    writeable.on('finish', function () {
+        res.status(200).json({
+            link: '/site/'+id+'.mp4'
+        });
     });
 });
 
