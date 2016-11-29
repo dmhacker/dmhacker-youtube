@@ -29,6 +29,9 @@
     <script src="/static/js/app.js"></script>
 
     <style>
+        html, body, .main-container {
+            height: 100%;
+        }
         body {
             background-color: whitesmoke;
         }
@@ -36,10 +39,10 @@
 </head>
 
 <body ng-controller="ProxyController">
-    <div class="container valign-wrapper">
-        <div class="row">
+    <div class="container main-container valign-wrapper">
+        <div class="row valign">
             <div class="col s12">
-                <div class="card valign">
+                <div class="card">
                     <div class="card-content red-text">
                         <form ng-submit="go()">
                             <div class="row">
