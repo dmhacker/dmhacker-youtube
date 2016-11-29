@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>David's Proxy</title>
+    <title>Khan Academy</title>
 
     <!-- Favicon -->
     <!-- link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" -->
@@ -36,17 +36,16 @@
 </head>
 
 <body ng-controller="ProxyController">
-    <div class="container">
+    <div class="container valign-wrapper">
         <div class="row">
             <div class="col s12">
-                <div class="card">
+                <div class="card valign">
                     <div class="card-content red-text">
-                        <span class="card-title">Enter a youtube video ID ...</span>
                         <form ng-submit="go()">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input ng-model="yt" id="yt" type="text" class="validate" required>
-                                    <label for="yt">Video</label>
+                                    <label for="yt">Video ID</label>
                                 </div>
                             </div>
                             <div class="row">
