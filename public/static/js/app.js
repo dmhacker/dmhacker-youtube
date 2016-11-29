@@ -3,16 +3,16 @@ var app = angular.module('Proxy', []);
 app.controller('ProxyController', function($scope, $http) {
 
     $scope.go = function () {
-        var b64url = window.btoa($scope.url);
+        var id = $scope.yt;
         $http({
             method: 'GET',
-            url: '/exists/'+b64url
+            url: '/target/'+id
         }).then(function (resp) {
-            if (resp.data.exists) {
-                window.location.href = '/site/' + b64url;
+            if (resp.data.link) {
+                window.location.href = resp.data.link;
             }
             else {
-                Materialize.toast('That site does not exist!', 4000);
+                Materialize.toast('That video does not exist!', 4000);
             }
         }, function (resp) {
             Materialize.toast(resp.data.message || 'An error occurred during processing.', 4000);

@@ -1,7 +1,7 @@
 {
-    "name": "dmhacker-proxy",
+    "name": "dmhacker-youtube",
     "version": "0.0.1",
-    "description": "Custom proxy server",
+    "description": "Proxy server tailored to fetch youtube videos",
     "engines": {
         "node": "5.9.1"
     },
@@ -12,19 +12,18 @@
     "dependencies": {
         "ejs": "2.4.1",
         "express": "4.13.3",
-        "express-http-proxy": "0.10.0",
-        "url-exists": "1.0.3",
-        "node-http-proxy": "1.14.0";
+        "ytdl-core": "0.7.19"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/dmhacker/dmhacker-proxy"
+        "url": "https://github.com/dmhacker/dmhacker-youtube"
     },
     "keywords": [
         "node",
         "heroku",
         "express",
-        "proxy"
+        "proxy",
+        "youtube"
     ],
     "license": "MIT"
 }
