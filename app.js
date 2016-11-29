@@ -2,7 +2,7 @@
 
 var express = require('express');
 var fs = require('fs');
-var youtube = require('ytdl-core');
+var ytdl = require('ytdl-core');
 
 var app = express();
 
