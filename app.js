@@ -20,7 +20,10 @@ app.get('/', function(request, response) {
 
 app.get('/target/:id', function (req, res) {
     var id = req.params.id;
-    ytdl('http://www.youtube.com/watch?v='+id).pipe(fs.createWriteStream(path.join(__dirname, 'public', 'site', id)));
+    var old_url = 'http://www.youtube.com/watch?v='+id;
+    var new_url = path.join(__dirname, 'public', 'site', id+'.wlv');
+    console.log(new_url);
+    ytdl(old_url).pipe(fs.createWriteStream(new_url));
     res.status(200).json({
         link: '/site/'+id
     });
