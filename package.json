@@ -12,7 +12,7 @@
     "dependencies": {
         "ejs": "2.4.1",
         "express": "4.13.3",
-        "ytdl-core": "0.7.19"
+        "ytdl-core": "0.9.1"
     },
     "repository": {
         "type": "git",
