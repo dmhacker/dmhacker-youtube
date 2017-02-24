@@ -25,10 +25,12 @@ app.get('/', function(request, response) {
 
 app.get('/target/:id', function (req, res) {
     var id = req.params.id;
-    var old_url = 'http://www.youtube.com/watch?v='+id;
+    var old_url = 'https://www.youtube.com/watch?v='+id;
     ytdl.getInfo(old_url, function (err, info) {
         if (err) {
-            res.status(500).send(err.message);
+            res.status(500).json({
+                message: err.message
+            });
         }
         else {
             var new_url = path.join(__dirname, 'public', 'site', id+'.mp4');
