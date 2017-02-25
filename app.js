@@ -63,7 +63,7 @@ app.get('/alexa/:id', function (req, res) {
 
             res.status(200).json({
                 'message': 'Attempting upload ...',
-                'link': s3.getPublicUrl(__bucket, key)
+                'link': s3.getPublicUrl(__bucket, key, 'us-west-1')
             });
         }
     });
