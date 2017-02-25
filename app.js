@@ -44,7 +44,7 @@ app.get('/alexa/:id', function (req, res) {
         }
         else {
             var tmpfile = require('path').join('/tmp', id+'.mp3');
-            var key = require('path').join('audio', id);
+            var key = require('path').join('audio', id+'.mp3');
 
             var writer = fs.createWriteStream(tmpfile);
             writer.on('finish', function () {
