@@ -12,7 +12,8 @@
     "dependencies": {
         "ejs": "2.4.1",
         "express": "4.13.3",
-        "ytdl-core": "0.9.1"
+        "ytdl-core": "0.9.1",
+        "s3": "4.4.0"
     },
     "repository": {
         "type": "git",
