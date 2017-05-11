@@ -5,6 +5,13 @@ var fs = require('fs');
 var path = require('path');
 var ytdl = require('ytdl-core');
 var s3 = require('s3');
+var search = require('youtube-search');
+
+var searchOpts = {
+    maxResults: 1,
+    type: 'video',
+    key: process.env.YOUTUBE_API_KEY
+};
 
 global.__bucket = process.env.S3_BUCKET;
 
@@ -39,6 +46,7 @@ app.get('/alexa/:id', function (req, res) {
     ytdl.getInfo(old_url, function (err, info) {
         if (err) {
             res.status(500).json({
+                state: 'error',
                 message: err.message
             });
         }
@@ -62,19 +70,21 @@ app.get('/alexa/:id', function (req, res) {
             }).pipe(writer);
 
             res.status(200).json({
-                'message': 'Attempting upload ...',
-                'link': s3.getPublicUrl(__bucket, key, 'us-west-1')
+                state: 'success',
+                message: 'Attempting upload ...',
+                link: s3.getPublicUrl(__bucket, key, 'us-west-1')
             });
         }
     });
 });
 
-app.get('/target/:id', function (req, res) {
+function fetch_target_id(req, res) {
     var id = req.params.id;
     var old_url = 'https://www.youtube.com/watch?v='+id;
     ytdl.getInfo(old_url, function (err, info) {
         if (err) {
             res.status(500).json({
+                state: 'error',
                 message: err.message
             });
         }
@@ -83,6 +93,7 @@ app.get('/target/:id', function (req, res) {
             var writeable = ytdl(old_url).pipe(fs.createWriteStream(new_url));
             writeable.on('finish', function () {
                 res.status(200).json({
+                    state: 'success',
                     link: '/site/'+id+'.mp4',
                     info: {
                         id: id,
@@ -90,6 +101,33 @@ app.get('/target/:id', function (req, res) {
                     }
                 });
             });
+        }
+    });
+}
+
+app.get('/target/:id', fetch_target_id);
+
+app.get('/search/:query', function (req, res) {
+    var query = req.params.query;
+    search(query, searchOpts, function(err, results) {
+        if (err) {
+            res.status(500).json({
+                state: 'error',
+                message: err.message
+            });
+        }
+        else {
+            if (!results || !results.length) {
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+            }
+            else {
+                var id = results[0].id;
+                req.params.id = id;
+                fetch_target_id(req, res);
+            }
         }
     });
 });
