@@ -40,43 +40,49 @@
 </head>
 
 <body ng-controller="ProxyController">
-    <div class="container main-container valign-wrapper">
-        <div class="row" style="width: 100%">
-            <div class="col s12 valign" ng-show="loading">
+    <div class="container main-container valign-wrapper" ng-show="loading">
+        <div class="row valign" style="width: 100%">
+            <div class="col s12" ng-show="loading">
                 <div class="progress">
                     <div class="indeterminate"></div>
                 </div>
             </div>
-            <div class="col s12" ng-hide="loading">
-                <div class="card">
-                    <div class="card-content red-text">
-                        <span class="card-title">YouTube</span>
-                        <form ng-submit="view()">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input ng-model="yt" id="yt" type="text" class="validate" required>
-                                    <label for="yt">Video ID</label>
+        </div>
+    </div>
+    <div class="container" ng-hide="loading">
+        <div class="row">
+            <div class="col s12">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content red-text">
+                            <span class="card-title">YouTube</span>
+                            <form ng-submit="view()">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input ng-model="yt" id="yt" type="text" class="validate" required>
+                                        <label for="yt">Video ID</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <button type="submit" class="waves-effect waves-light btn red">Go</button>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <button type="submit" class="waves-effect waves-light btn red">Go</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content red-text">
-                        <span class="card-title">History</span>
-                        <div class="row">
-                            <div class="col s12">
-                                <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
-                            </div>
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col s12">
-                                <button class="waves-effect waves-light btn red" ng-click="clear()">Clear</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-content red-text">
+                            <span class="card-title">History</span>
+                            <div class="row">
+                                <div class="col s12">
+                                    <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <button class="waves-effect waves-light btn red" ng-click="clear()">Clear</button>
+                                </div>
                             </div>
                         </div>
                     </div>
