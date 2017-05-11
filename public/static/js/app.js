@@ -12,18 +12,40 @@ app.controller('ProxyController', function($scope, $http, $cookies) {
 
     $scope.view = function () {
         $scope.loading = true;
-        var id = $scope.yt;
+        var id = $scope.ytLink;
         $http({
             method: 'GET',
             url: '/target/'+id
         }).then(function (resp) {
-            if (resp.data.link) {
+            if (resp.data.state === 'success') {
                 $scope.history.unshift(resp.data.info);
                 $scope.save();
                 window.location.href = resp.data.link;
             }
             else {
-                Materialize.toast('That video does not exist!', 4000);
+                Materialize.toast(resp.data.message || 'That video does not exist!', 4000);
+                $scope.loading = false;
+            }
+        }, function (resp) {
+            Materialize.toast(resp.data.message || 'An error occurred during processing.', 4000);
+            $scope.loading = false;
+        });
+    };
+
+    $scope.searchView = function() {
+        $scope.loading = true;
+        var query = $scope.ytSearch;
+        $http({
+            method: 'GET',
+            url: '/search/'+query
+        }).then(function (resp) {
+            if (resp.data.state === 'success') {
+                $scope.history.unshift(resp.data.info);
+                $scope.save();
+                window.location.href = resp.data.link;
+            }
+            else {
+                Materialize.toast(resp.data.message || 'That video does not exist!', 4000);
                 $scope.loading = false;
             }
         }, function (resp) {

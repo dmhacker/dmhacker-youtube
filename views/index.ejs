@@ -30,9 +30,12 @@
     <script src="/static/js/app.js"></script>
 
     <style>
-        html, body, .main-container {
+        html,
+        body,
+        .main-container {
             height: 100%;
         }
+
         body {
             background-color: whitesmoke;
         }
@@ -51,38 +54,60 @@
     </div>
     <div class="container" ng-hide="loading">
         <div class="row">
-            <div class="col s12">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-content red-text">
-                            <span class="card-title">YouTube</span>
-                            <form ng-submit="view()">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input ng-model="yt" id="yt" type="text" class="validate" required>
-                                        <label for="yt">Video ID</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <button type="submit" class="waves-effect waves-light btn red">Go</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-content red-text">
-                            <span class="card-title">History</span>
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <span class="card-title">YouTube Direct Link</span>
+                        <form ng-submit="view()">
                             <div class="row">
-                                <div class="col s12">
-                                    <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
+                                <div class="input-field col s12">
+                                    <input ng-model="ytLink" id="ytLink" type="text" class="validate" required>
+                                    <label for="ytLink">Video ID</label>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
-                                    <button class="waves-effect waves-light btn red" ng-click="clear()">Clear</button>
+                                <div class="input-field col s12">
+                                    <button type="submit" class="waves-effect waves-light btn red">Go</button>
                                 </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <span class="card-title">YouTube Search</span>
+                        <form ng-submit="searchView()">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input ng-model="ytSearch" id="ytSearch" type="text" class="validate" required>
+                                    <label for="ytSearch">Search Query</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <button type="submit" class="waves-effect waves-light btn red">Go</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <span class="card-title">History</span>
+                        <div class="row">
+                            <div class="col s12">
+                                <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <button class="waves-effect waves-light btn red" ng-click="clear()">Clear</button>
                             </div>
                         </div>
                     </div>
