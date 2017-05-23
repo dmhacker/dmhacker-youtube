@@ -49,6 +49,34 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
+app.get('/alexa-check/:id', function (req, res) {
+    var id = req.params.id;
+    AudioMetadata.findOne({
+        id: id
+    }).exec(function (err, metadata) {
+        if (err) {
+            res.status(500).json({
+                state: 'error',
+                message: err.message
+            });
+        }
+        else if (!metadata) {
+            res.status(200).json({
+                state: 'success',
+                message: 'YouTube audio not downloaded',
+                metadata: undefined
+            });
+        }
+        else {
+            res.status(200).json({
+                state: 'success',
+                message: 'YouTube audio metadata found',
+                metadata: metadata
+            });
+        }
+    });
+});
+
 app.get('/alexa/:id', function (req, res) {
     var id = req.params.id;
     var old_url = 'https://www.youtube.com/watch?v='+id;
