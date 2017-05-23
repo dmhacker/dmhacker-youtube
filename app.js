@@ -63,8 +63,7 @@ app.get('/alexa-check/:id', function (req, res) {
         else if (!metadata) {
             res.status(200).json({
                 state: 'success',
-                message: 'YouTube audio not downloaded',
-                metadata: undefined
+                message: 'YouTube audio not downloaded'
             });
         }
         else {
