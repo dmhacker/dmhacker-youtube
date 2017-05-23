@@ -7,6 +7,15 @@ var ytdl = require('ytdl-core');
 var s3 = require('s3');
 var search = require('youtube-search');
 
+// MongoDB
+var mongoose = require('mongoose');
+var AudioMetadata = mongoose.model('AudioMetadata', new mongoose.Schema({
+    id: String,
+    downloaded: Boolean
+}));
+
+mongoose.connect(process.env.MONGODB_CONNECTION);
+
 var searchOpts = {
     maxResults: 1,
     type: 'video',
@@ -51,28 +60,44 @@ app.get('/alexa/:id', function (req, res) {
             });
         }
         else {
-            var tmpfile = require('path').join('/tmp', id+'.mp3');
-            var key = require('path').join('audio', id+'.mp3');
-
-            var writer = fs.createWriteStream(tmpfile);
-            writer.on('finish', function () {
-                var uploader = s3Client.uploadFile({
-                    localFile: tmpfile,
-                    s3Params: {
-                        Bucket: __bucket,
-                        Key: key
-                    }
-                });
+            var metadata = new AudioMetadata({
+                id: id,
+                downloaded: false
             });
+            metadata.save(function (err, metadata) {
+                if (err) {
+                    res.status(500).json({
+                        state: 'error',
+                        message: err.message
+                    });
+                }
+                else {
+                    var tmpfile = require('path').join('/tmp', id+'.mp3');
+                    var key = require('path').join('audio', id+'.mp3');
 
-            ytdl(old_url, {
-                filter: 'audioonly'
-            }).pipe(writer);
+                    var writer = fs.createWriteStream(tmpfile);
+                    writer.on('finish', function () {
+                        var uploader = s3Client.uploadFile({
+                            localFile: tmpfile,
+                            s3Params: {
+                                Bucket: __bucket,
+                                Key: key
+                            }
+                        });
+                        metadata.downloaded = true;
+                        metadata.save(function (err, metadata) {});
+                    });
 
-            res.status(200).json({
-                state: 'success',
-                message: 'Attempting upload ...',
-                link: s3.getPublicUrl(__bucket, key, 'us-west-1')
+                    ytdl(old_url, {
+                        filter: 'audioonly'
+                    }).pipe(writer);
+
+                    res.status(200).json({
+                        state: 'success',
+                        message: 'Attempting upload ...',
+                        link: s3.getPublicUrl(__bucket, key, 'us-west-1')
+                    });
+                }
             });
         }
     });
@@ -134,4 +159,12 @@ app.get('/search/:query', function (req, res) {
 
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
+    AudioMetadata.remove({}, function (err, results) {
+        if (err) {
+            console.log(err.message);
+        }
+        else {
+            console.log('Cleared old metadata.');
+        }
+    });
 });
