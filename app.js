@@ -108,7 +108,8 @@ app.get('/alexa/:id', function (req, res) {
                             localFile: tmpfile,
                             s3Params: {
                                 Bucket: __bucket,
-                                Key: key
+                                Key: key,
+                                ContentType: 'application/x-mpegurl'
                             }
                         });
                         metadata.downloaded = true;
