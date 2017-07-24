@@ -6,7 +6,6 @@ var path = require('path');
 var ytdl = require('ytdl-core');
 var s3 = require('s3');
 var search = require('youtube-search');
-var m3u = require('m3u');
 
 // MongoDB
 var mongoose = require('mongoose');
@@ -116,9 +115,7 @@ app.get('/alexa/:id', function (req, res) {
                             }
                         });
                         uploader.on('end', function() {
-                            var writer_m3u = m3u.writer();
-                            writer_m3u.file(tmpfile);
-                            fs.writeFile(tmpfile_m3u, writer_m3u.toString(), function(err) {
+                            fs.writeFile(tmpfile_m3u, '#EXTM3U\n'+s3.getPublicUrl(__bucket, key, 'us-west-1'), function(err) {
                                 if (err) {
                                     console.log(err);
                                 }
@@ -127,7 +124,8 @@ app.get('/alexa/:id', function (req, res) {
                                         localFile: tmpfile_m3u,
                                         s3Params: {
                                             Bucket: __bucket,
-                                            Key: key_m3u
+                                            Key: key_m3u,
+                                            ContentType: 'application/x-mpegurl'
                                         }
                                     });
                                     uploader_m3u.on('end', function() {
