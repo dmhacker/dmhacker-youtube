@@ -15,7 +15,8 @@
         "ytdl-core": "0.9.1",
         "youtube-search": "1.0.8",
         "mongoose": "^4.5.0",
-        "s3": "4.4.0"
+        "s3": "4.4.0",
+        "m3u": "0.0.2"
     },
     "repository": {
         "type": "git",

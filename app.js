@@ -6,6 +6,7 @@ var path = require('path');
 var ytdl = require('ytdl-core');
 var s3 = require('s3');
 var search = require('youtube-search');
+var m3u = require('m3u');
 
 // MongoDB
 var mongoose = require('mongoose');
@@ -102,6 +103,9 @@ app.get('/alexa/:id', function (req, res) {
                     var tmpfile = require('path').join('/tmp', id+'.mp3');
                     var key = require('path').join('audio', id+'.mp3');
 
+                    var tmpfile_m3u = require('path').join('/tmp', id+'.m3u');
+                    var key_m3u = require('path').join('audio', id+'.m3u');
+
                     var writer = fs.createWriteStream(tmpfile);
                     writer.on('finish', function () {
                         var uploader = s3Client.uploadFile({
@@ -111,10 +115,29 @@ app.get('/alexa/:id', function (req, res) {
                                 Key: key
                             }
                         });
-                        metadata.downloaded = true;
-                        metadata.save(function (err, metadata) {});
+                        uploader.on('end', function() {
+                            var writer_m3u = m3u.writer();
+                            writer_m3u.file(tmpfile);
+                            fs.writeFile(tmpfile_m3u, writer_m3u.toString(), function(err) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    var uploader_m3u = s3Client.uploadFile({
+                                        localFile: tmpfile_m3u,
+                                        s3Params: {
+                                            Bucket: __bucket,
+                                            Key: key_m3u
+                                        }
+                                    });
+                                    uploader_m3u.on('end', function() {
+                                        metadata.downloaded = true;
+                                        metadata.save(function (err, metadata) {});
+                                    });
+                                }
+                            });
+                        });
                     });
-
                     ytdl(old_url, {
                         filter: 'audioonly'
                     }).pipe(writer);
@@ -122,7 +145,7 @@ app.get('/alexa/:id', function (req, res) {
                     res.status(200).json({
                         state: 'success',
                         message: 'Attempting upload ...',
-                        link: s3.getPublicUrl(__bucket, key, 'us-west-1')
+                        link: s3.getPublicUrl(__bucket, key_m3u, 'us-west-1')
                     });
                 }
             });
