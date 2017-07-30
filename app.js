@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
@@ -146,7 +144,8 @@ app.get('/alexa/:id', function (req, res) {
                     res.status(200).json({
                         state: 'success',
                         message: 'Attempting upload ...',
-                        link: s3.getPublicUrl(__bucket, key_m3u, s3BucketServer)
+                        link: s3.getPublicUrl(__bucket, key_m3u, s3BucketServer),
+                        urlkey: key
                     });
                 }
             });
