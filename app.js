@@ -100,8 +100,8 @@ app.get('/alexa/:id', function (req, res) {
                     });
                 }
                 else {
-                    var tmpfile = require('path').join('/tmp', id+'.mp3');
-                    var key = require('path').join('audio', id+'.mp3');
+                    var tmpfile = require('path').join('/tmp', id+'.mp4');
+                    var key = require('path').join('audio', id+'.mp4');
 
                     var tmpfile_m3u = require('path').join('/tmp', id+'.m3u8');
                     var key_m3u = require('path').join('audio', id+'.m3u8');
