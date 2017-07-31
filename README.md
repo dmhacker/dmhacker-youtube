@@ -18,5 +18,5 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 | YOUTUBE_API_KEY      | any YouTube API key you have generated                                |
 
 4. Push this code to the Heroku server using "git push heroku master".
-5. Visit it at https://{APPNAME}.herokuapp.com
+5. Visit it at https://{APPNAME}.herokuapp.com.
 
