@@ -31,6 +31,9 @@ var s3Client = s3.createClient({
     }
 });
 
+// set this env var to either 'us-west-1' or 'us-east-1' depending on where your bucket is
+var s3BucketServer = process.env.S3_BUCKET_SERVER; 
+
 var app = express();
 
 var dir = './public/site';
@@ -115,7 +118,7 @@ app.get('/alexa/:id', function (req, res) {
                             }
                         });
                         uploader.on('end', function() {
-                            fs.writeFile(tmpfile_m3u, '#EXTM3U\n'+s3.getPublicUrl(__bucket, key, 'us-west-1'), function(err) {
+                            fs.writeFile(tmpfile_m3u, '#EXTM3U\n'+s3.getPublicUrl(__bucket, key, s3BucketServer), function(err) {
                                 if (err) {
                                     console.log(err);
                                 }
@@ -143,7 +146,7 @@ app.get('/alexa/:id', function (req, res) {
                     res.status(200).json({
                         state: 'success',
                         message: 'Attempting upload ...',
-                        link: s3.getPublicUrl(__bucket, key_m3u, 'us-west-1')
+                        link: s3.getPublicUrl(__bucket, key_m3u, s3BucketServer)
                     });
                 }
             });
