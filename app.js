@@ -7,15 +7,6 @@ var ytdl = require('ytdl-core');
 var s3 = require('s3');
 var search = require('youtube-search');
 
-// MongoDB
-var mongoose = require('mongoose');
-var AudioMetadata = mongoose.model('AudioMetadata', new mongoose.Schema({
-    id: String,
-    downloaded: Boolean
-}));
-
-mongoose.connect(process.env.MONGODB_CONNECTION);
-
 var searchOpts = {
     maxResults: 1,
     type: 'video',
@@ -49,33 +40,6 @@ app.get('/', function(request, response) {
     response.render('index');
 });
 
-app.get('/alexa-check/:id', function (req, res) {
-    var id = req.params.id;
-    AudioMetadata.findOne({
-        id: id
-    }).exec(function (err, metadata) {
-        if (err) {
-            res.status(500).json({
-                state: 'error',
-                message: err.message
-            });
-        }
-        else if (!metadata) {
-            res.status(200).json({
-                state: 'success',
-                message: 'YouTube audio not downloaded'
-            });
-        }
-        else {
-            res.status(200).json({
-                state: 'success',
-                message: 'YouTube audio metadata found',
-                metadata: metadata
-            });
-        }
-    });
-});
-
 app.get('/alexa/:id', function (req, res) {
     var id = req.params.id;
     var old_url = 'https://www.youtube.com/watch?v='+id;
@@ -87,66 +51,29 @@ app.get('/alexa/:id', function (req, res) {
             });
         }
         else {
-            var metadata = new AudioMetadata({
-                id: id,
-                downloaded: false
-            });
-            metadata.save(function (err, metadata) {
-                if (err) {
-                    res.status(500).json({
-                        state: 'error',
-                        message: err.message
-                    });
-                }
-                else {
-                    var tmpfile = require('path').join('/tmp', id+'.mp3');
-                    var key = require('path').join('audio', id+'.mp3');
+            var tmpfile = require('path').join('/tmp', id+'.mp3');
+            var key = require('path').join('audio', id+'.mp3');
 
-                    var tmpfile_m3u = require('path').join('/tmp', id+'.m3u8');
-                    var key_m3u = require('path').join('audio', id+'.m3u8');
-
-                    var writer = fs.createWriteStream(tmpfile);
-                    writer.on('finish', function () {
-                        var uploader = s3Client.uploadFile({
-                            localFile: tmpfile,
-                            s3Params: {
-                                Bucket: __bucket,
-                                Key: key
-                            }
-                        });
-                        uploader.on('end', function() {
-                            fs.writeFile(tmpfile_m3u, '#EXTM3U\n'+s3.getPublicUrl(__bucket, key, 'us-west-1'), function(err) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                else {
-                                    var uploader_m3u = s3Client.uploadFile({
-                                        localFile: tmpfile_m3u,
-                                        s3Params: {
-                                            Bucket: __bucket,
-                                            Key: key_m3u,
-                                            ContentType: 'application/x-mpegurl'
-                                        }
-                                    });
-                                    uploader_m3u.on('end', function() {
-                                        metadata.downloaded = true;
-                                        metadata.save(function (err, metadata) {});
-                                    });
-                                }
-                            });
-                        });
-                    });
-                    ytdl(old_url, {
-                        filter: 'audioonly'
-                    }).pipe(writer);
-
+            var writer = fs.createWriteStream(tmpfile);
+            writer.on('finish', function () {
+                var uploader = s3Client.uploadFile({
+                    localFile: tmpfile,
+                    s3Params: {
+                        Bucket: __bucket,
+                        Key: key
+                    }
+                });
+                uploader.on('end', function() {
                     res.status(200).json({
                         state: 'success',
-                        message: 'Attempting upload ...',
-                        link: s3.getPublicUrl(__bucket, key_m3u, 'us-west-1')
+                        message: 'Uploaded',
+                        link: s3.getPublicUrl(__bucket, key, 'us-west-1')
                     });
-                }
+                });
             });
+            ytdl(old_url, {
+                filter: 'audioonly'
+            }).pipe(writer);
         }
     });
 });
