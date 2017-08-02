@@ -134,12 +134,4 @@ app.get('/search/:query', function (req, res) {
 
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
-    AudioMetadata.remove({}, function (err, results) {
-        if (err) {
-            console.log(err.message);
-        }
-        else {
-            console.log('Cleared old metadata.');
-        }
-    });
 });
