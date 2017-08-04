@@ -5,12 +5,6 @@ var ytdl = require('ytdl-core');
 var ytsearch = require('youtube-search');
 var ffmpeg = require('fluent-ffmpeg');
 
-var ytsearchOpts = {
-  maxResults: 1,
-  type: 'video',
-  key: process.env.YOUTUBE_API_KEY
-};
-
 var app = express();
 
 var dir = './public/site';
@@ -93,7 +87,11 @@ app.get('/target/:id', fetch_target_id);
 
 app.get('/search/:query', function(req, res) {
   var query = req.params.query;
-  ytsearch(query, ytsearchOpts, function(err, results) {
+  ytsearch(query, {
+    maxResults: 1,
+    type: 'video',
+    key: process.env.YOUTUBE_API_KEY
+  }, function(err, results) {
     if (err) {
       res.status(500).json({
         state: 'error',
