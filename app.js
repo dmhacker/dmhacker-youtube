@@ -2,25 +2,14 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var ytdl = require('ytdl-core');
-// var s3 = require('s3');
-var search = require('youtube-search');
+var ytsearch = require('youtube-search');
+var ffmpeg = require('fluent-ffmpeg');
 
-var searchOpts = {
+var ytsearchOpts = {
   maxResults: 1,
   type: 'video',
   key: process.env.YOUTUBE_API_KEY
 };
-
-/*
-global.__bucket = process.env.S3_BUCKET;
-
-var s3Client = s3.createClient({
-  s3Options: {
-    accessKeyId: process.env.S3_ACCESS_KEY,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-  }
-});
-*/
 
 var app = express();
 
@@ -50,43 +39,25 @@ app.get('/alexa/:id', function(req, res) {
         message: err.message
       });
     } else {
+      var tmp_url = path.join(__dirname, 'tmp', '_' + id + '.mp4');
       var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
       var writer = fs.createWriteStream(new_url);
       writer.on('finish', function() {
-        res.status(200).json({
-          state: 'success',
-          message: 'Uploaded successfully.',
-          link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3'
+        var converter = ffmpeg(tmp_url)
+          .format("mp3")
+          .audioBitrate(128)
+          .save(new_url);
+        converter.on('finish', function() {
+          res.status(200).json({
+            state: 'success',
+            message: 'Uploaded successfully.',
+            link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3'
+          });
         });
       });
       ytdl(old_url, {
         filter: 'audioonly'
       }).pipe(writer);
-      /*
-      var tmpfile = require('path').join('/tmp', id+'.mp3');
-      var key = require('path').join('audio', id+'.mp3');
-
-      var writer = fs.createWriteStream(tmpfile);
-      writer.on('finish', function () {
-          var uploader = s3Client.uploadFile({
-              localFile: tmpfile,
-              s3Params: {
-                  Bucket: __bucket,
-                  Key: key
-              }
-          });
-          uploader.on('end', function() {
-              res.status(200).json({
-                  state: 'success',
-                  message: 'Uploaded successfully.',
-                  link: s3.getPublicUrl(__bucket, key, 'us-west-1')
-              });
-          });
-      });
-      ytdl(old_url, {
-          filter: 'audioonly'
-      }).pipe(writer);
-      */
     }
   });
 });
@@ -122,7 +93,7 @@ app.get('/target/:id', fetch_target_id);
 
 app.get('/search/:query', function(req, res) {
   var query = req.params.query;
-  search(query, searchOpts, function(err, results) {
+  ytsearch(query, ytsearchOpts, function(err, results) {
     if (err) {
       res.status(500).json({
         state: 'error',
