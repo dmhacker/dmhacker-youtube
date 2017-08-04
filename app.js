@@ -33,9 +33,9 @@ app.get('/alexa/:id', function(req, res) {
         message: err.message
       });
     } else {
-      var tmp_url = path.join(__dirname, 'public', '_' + id + '.mp4');
+      var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
       var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
-      var writer = fs.createWriteStream(new_url);
+      var writer = fs.createWriteStream(tmp_url);
       writer.on('finish', function() {
         var converter = ffmpeg(tmp_url)
           .format("mp3")
