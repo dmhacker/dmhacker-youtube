@@ -53,11 +53,8 @@ app.get('/alexa/:id', function(req, res) {
       writer.on('finish', function() {
         res.status(200).json({
           state: 'success',
-          link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3',
-          info: {
-            id: id,
-            title: info.title
-          }
+          message: 'Uploaded successfully.',
+          link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3'
         });
       });
       ytdl(old_url, {
@@ -104,7 +101,7 @@ function fetch_target_id(req, res) {
     } else {
       var new_url = path.join(__dirname, 'public', 'site', id + '.mp4');
       var writer = fs.createWriteStream(new_url);
-      writer.on('finish', function () {
+      writer.on('finish', function() {
         res.status(200).json({
           state: 'success',
           link: '/site/' + id + '.mp4',
