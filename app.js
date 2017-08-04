@@ -2,7 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var ytdl = require('ytdl-core');
-var s3 = require('s3');
+// var s3 = require('s3');
 var search = require('youtube-search');
 
 var searchOpts = {
@@ -11,6 +11,7 @@ var searchOpts = {
   key: process.env.YOUTUBE_API_KEY
 };
 
+/*
 global.__bucket = process.env.S3_BUCKET;
 
 var s3Client = s3.createClient({
@@ -19,6 +20,7 @@ var s3Client = s3.createClient({
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
   }
 });
+*/
 
 var app = express();
 
