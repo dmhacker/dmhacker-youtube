@@ -11,7 +11,6 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 
 | Key                  | Value                                                                 |
 | -------------------- | --------------------------------------------------------------------- |
-| MONGODB_CONNECTION   | mongodb://{USER}:{PASSWORD}@{SERVER-ADDRESS}:{SERVER-PORT}/{DATABASE} |
 | S3_ACCESS_KEY        | S3 public access key                                                  |
 | S3_SECRET_ACCESS_KEY | S3 private access key                                                 |
 | S3_BUCKET            | S3 bucket name                                                        |
