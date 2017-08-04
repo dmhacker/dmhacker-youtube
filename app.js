@@ -62,7 +62,7 @@ app.get('/alexa/:id', function(req, res) {
       });
       ytdl(old_url, {
         filter: 'audioonly'
-      }).pipe(new_url);
+      }).pipe(writer);
       /*
       var tmpfile = require('path').join('/tmp', id+'.mp3');
       var key = require('path').join('audio', id+'.mp3');
