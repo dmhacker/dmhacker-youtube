@@ -7,9 +7,12 @@ var ffmpeg = require('fluent-ffmpeg');
 
 var app = express();
 
-var dir = './public/site';
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
+var mkdirs = ['./public/site', './tmp'];
+for (var i in mkdirs) {
+  var dir = mkdirs[i];
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
 }
 
 app.set('port', (process.env.PORT || 5000));
@@ -33,21 +36,21 @@ app.get('/alexa/:id', function(req, res) {
         message: err.message
       });
     } else {
-      var tmp_url = path.join(__dirname, 'public', 'site', id + '.mp4');
+      var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
       var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
       var writer = fs.createWriteStream(tmp_url);
       writer.on('finish', function() {
-        var converter = ffmpeg(tmp_url)
+        ffmpeg(tmp_url)
           .format("mp3")
           .audioBitrate(128)
+          .on('end', function(){
+            res.status(200).json({
+              state: 'success',
+              message: 'Uploaded successfully.',
+              link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3'
+            });
+          })
           .save(new_url);
-        converter.on('finish', function() {
-          res.status(200).json({
-            state: 'success',
-            message: 'Uploaded successfully.',
-            link: 'https://dmhacker-youtube.herokuapp.com/site/' + id + '.mp3'
-          });
-        });
       });
       ytdl(old_url, {
         filter: 'audioonly'
