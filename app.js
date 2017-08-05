@@ -49,7 +49,11 @@ function fetch_file_for_alexa(req, res) {
             res.status(200).json({
               state: 'success',
               message: 'Uploaded successfully.',
-              link: '/site/' + id + '.mp3'
+              link: '/site/' + id + '.mp3',
+              info: {
+                id: id,
+                title: info.title
+              }
             });
           })
           .save(new_url);

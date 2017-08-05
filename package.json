@@ -13,7 +13,6 @@
         "ejs": "2.4.1",
         "express": "4.13.3",
         "ytdl-core": "0.9.1",
-        "youtube-search": "1.0.8",
         "fluent-ffmpeg": "^2.1.0"
     },
     "repository": {
