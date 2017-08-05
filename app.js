@@ -47,7 +47,7 @@ app.get('/alexa/:id', function(req, res) {
             res.status(200).json({
               state: 'success',
               message: 'Uploaded successfully.',
-              link: 'site/' + id + '.mp3'
+              link: '/site/' + id + '.mp3'
             });
           })
           .save(new_url);
