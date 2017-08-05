@@ -52,7 +52,8 @@ function fetch_file_for_alexa(req, res) {
               link: '/site/' + id + '.mp3',
               info: {
                 id: id,
-                title: info.title
+                title: info.title,
+                original: 'https://www.youtube.com/watch?v='+id
               }
             });
           })
