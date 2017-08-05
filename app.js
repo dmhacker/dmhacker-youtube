@@ -50,6 +50,7 @@ app.get('/alexa-search/:query', function(req, res) {
     } else {
       var metadata = results[0];
       var id = metadata.id;
+      var orig_url = 'https://www.youtube.com/watch?v='+id;
 
       if (!(id in cache)) {
         var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
@@ -64,7 +65,7 @@ app.get('/alexa-search/:query', function(req, res) {
             })
             .save(new_url);
         });
-        ytdl(old_url, {
+        ytdl(orig_url, {
           filter: 'audioonly'
         }).pipe(writer);
 
@@ -78,7 +79,7 @@ app.get('/alexa-search/:query', function(req, res) {
         info: {
           id: id,
           title: metadata.title,
-          original: 'https://www.youtube.com/watch?v='+id
+          original: orig_url
         }
       });
     }
