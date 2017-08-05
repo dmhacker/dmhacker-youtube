@@ -28,45 +28,7 @@ app.get('/', function(request, response) {
 
 //////////////////////////// ALEXA ROUTES ////////////////////////////
 
-function fetch_file_for_alexa(req, res) {
-  var id = req.params.id;
-  var old_url = 'https://www.youtube.com/watch?v=' + id;
-  ytdl.getInfo(old_url, function(err, info) {
-    if (err) {
-      res.status(500).json({
-        state: 'error',
-        message: err.message
-      });
-    } else {
-      var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
-      var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
-      var writer = fs.createWriteStream(tmp_url);
-      writer.on('finish', function() {
-        ffmpeg(tmp_url)
-          .format("mp3")
-          .audioBitrate(128)
-          .on('end', function(){
-            res.status(200).json({
-              state: 'success',
-              message: 'Uploaded successfully.',
-              link: '/site/' + id + '.mp3',
-              info: {
-                id: id,
-                title: info.title,
-                original: 'https://www.youtube.com/watch?v='+id
-              }
-            });
-          })
-          .save(new_url);
-      });
-      ytdl(old_url, {
-        filter: 'audioonly'
-      }).pipe(writer);
-    }
-  });
-}
-
-app.get('/alexa/:id', fetch_file_for_alexa);
+var cache = {};
 
 app.get('/alexa-search/:query', function(req, res) {
   var query = new Buffer(req.params.query, 'base64').toString();
@@ -81,17 +43,74 @@ app.get('/alexa-search/:query', function(req, res) {
         message: err.message
       });
     } else if (!results || !results.length) {
-        res.status(200).send({
-          state: 'error',
-          message: 'No results found'
-        });
+      res.status(200).send({
+        state: 'error',
+        message: 'No results found'
+      });
     } else {
-        var id = results[0].id;
-        req.params.id = id;
-        fetch_file_for_alexa(req, res);
+      var metadata = results[0];
+      var id = metadata.id;
+
+      if (!(id in cache)) {
+        var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
+        var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
+        var writer = fs.createWriteStream(tmp_url);
+        writer.on('finish', function() {
+          ffmpeg(tmp_url)
+            .format("mp3")
+            .audioBitrate(128)
+            .on('end', function(){
+              cache[id]['downloaded'] = true;
+            })
+            .save(new_url);
+        });
+        ytdl(old_url, {
+          filter: 'audioonly'
+        }).pipe(writer);
+
+        cache[id] = { downloaded: false };
+      }
+
+      res.status(200).json({
+        state: 'success',
+        message: 'Uploaded successfully.',
+        link: '/site/' + id + '.mp3',
+        info: {
+          id: id,
+          title: metadata.title,
+          original: 'https://www.youtube.com/watch?v='+id
+        }
+      });
     }
   });
 });
+
+app.get('/alexa-check/:id', function(req, res) {
+  var id = req.params.id;
+  if (id in cache) {
+    if (cache[id]['downloaded']) {
+      res.status(200).send({
+        state: 'success',
+        message: 'Downloaded',
+        downloaded: true
+      });
+    }
+    else {
+      res.status(200).send({
+        state: 'success',
+        message: 'Download in progress',
+        downloaded: false
+      });
+    }
+  }
+  else {
+    res.status(200).send({
+      state: 'success',
+      message: 'Not in cache'
+    });
+  }
+});
+
 
 //////////////////////////// NON-ALEXA ROUTES ////////////////////////////
 
