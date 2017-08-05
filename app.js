@@ -26,7 +26,9 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-app.get('/alexa/:id', function(req, res) {
+//////////////////////////// ALEXA ROUTES ////////////////////////////
+
+function fetch_file_for_alexa(req, res) {
   var id = req.params.id;
   var old_url = 'https://www.youtube.com/watch?v=' + id;
   ytdl.getInfo(old_url, function(err, info) {
@@ -57,7 +59,36 @@ app.get('/alexa/:id', function(req, res) {
       }).pipe(writer);
     }
   });
+}
+
+app.get('/alexa/:id', fetch_file_for_alexa);
+
+app.get('/alexa-search/:query', function(req, res) {
+  var query = new Buffer(req.params.query, 'base64').toString();
+  ytsearch(query, {
+    maxResults: 1,
+    type: 'video',
+    key: process.env.YOUTUBE_API_KEY
+  }, function(err, results) {
+    if (err) {
+      res.status(500).json({
+        state: 'error',
+        message: err.message
+      });
+    } else if (!results || !results.length) {
+        res.status(200).send({
+          state: 'error',
+          message: 'No results found'
+        });
+    } else {
+        var id = results[0].id;
+        req.params.id = id;
+        fetch_file_for_alexa(req, res);
+    }
+  });
 });
+
+//////////////////////////// NON-ALEXA ROUTES ////////////////////////////
 
 function fetch_target_id(req, res) {
   var id = req.params.id;
