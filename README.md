@@ -24,4 +24,4 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 13. Now, you're ready to deploy! Go back to the __Deploy__ section.
 14. Scroll to the bottom, and under "Manual deploy", click on "Deploy Branch". 
 15. If you get a "Your app was successfully deployed", congratulations, you are done, and your app should be running!
-16. To verify, put https://{{{YOUR_APP_NAME}}}.herokuapp.com into your favorite web browser and see if it returns a correctly formed landing page.
+16. To verify, open up https://{{{YOUR_APP_NAME}}}.herokuapp.com in a new tab and see if it returns a correctly formed landing page.
