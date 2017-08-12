@@ -32,10 +32,15 @@ var cache = {};
 
 app.get('/alexa-search/:query', function(req, res) {
   var query = new Buffer(req.params.query, 'base64').toString();
+  var lang = req.query.language || 'en';
+  if (lang !== 'en' || lang !== 'de') {
+    lang = 'en';
+  }
   console.log('Query from ' + req.connection.remoteAddress + ': '+query);
   ytsearch(query, {
     maxResults: 1,
     type: 'video',
+    relevanceLanguage: lang,
     key: process.env.YOUTUBE_API_KEY
   }, function(err, results) {
     if (err) {
