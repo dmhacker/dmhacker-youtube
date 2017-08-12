@@ -23,5 +23,5 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 12. Next, under "Buildpacks", click on "Add buildpack". When prompted, copy-paste this link into the input section: https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
 13. Now, you're ready to deploy! Go back to the __Deploy__ section.
 14. Scroll to the bottom, and under "Manual deploy", click on "Deploy Branch". 
-15. If you get a "Your app was successfully deployed", congratulations! You are done, and your app has successfully been deployed.
+15. If you get a "Your app was successfully deployed", congratulations, you are done, and your app should be running!
 16. To verify, put https://{{{YOUR_APP_NAME}}}.herokuapp.com into your favorite web browser and see if it returns a correctly formed landing page.
