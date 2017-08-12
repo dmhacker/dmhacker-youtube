@@ -8,7 +8,7 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 2. Fork this repository. Make sure your branch is up-to-date with master.
 3. Now, go to https://heroku.com and create an account (or log in, if you already have an account).
 4. On your dashboard, click on "New" -> "Create new app"
-5. Give your app a name such as "{{{YOUR_USERNAME}}}-youtube" and select a region for deployment.
+5. Give your app a name such as "{{{YOUR_USERNAME}}}-youtube" (substitute your username instead of {{{YOUR_USERNAME}}}) and select a region for deployment.
 6. Go to the __Deploy__ section on your new app's dashboard.
 7. Under "Deployment Method", select the GitHub option. You should be prompted to authorize Heroku's usage of your GitHub account information. 
 8. Under "Connect to GitHub", make sure your account is selected and type in "dmhacker-youtube" for the repository to search for.
