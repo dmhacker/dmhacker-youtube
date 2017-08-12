@@ -32,17 +32,20 @@ var cache = {};
 
 app.get('/alexa-search/:query', function(req, res) {
   var query = new Buffer(req.params.query, 'base64').toString();
+  console.log('Query from ' + req.connection.remoteAddress + ': '+query);
   ytsearch(query, {
     maxResults: 1,
     type: 'video',
     key: process.env.YOUTUBE_API_KEY
   }, function(err, results) {
     if (err) {
+      console.log('An error occurred: '+err.message);
       res.status(500).json({
         state: 'error',
         message: err.message
       });
     } else if (!results || !results.length) {
+      console.log('No results found.');
       res.status(200).send({
         state: 'error',
         message: 'No results found'
@@ -51,6 +54,8 @@ app.get('/alexa-search/:query', function(req, res) {
       var metadata = results[0];
       var id = metadata.id;
       var orig_url = 'https://www.youtube.com/watch?v='+id;
+
+      console.log('Query result: '+metadata.title);
 
       if (!(id in cache)) {
         var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
