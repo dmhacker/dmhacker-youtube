@@ -21,7 +21,8 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 | YOUTUBE_API_KEY      | the YouTube API key you generated earlier                             |
 
 12. Next, under "Buildpacks", click on "Add buildpack". When prompted, copy-paste this link into the input section: https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
-13. Now, you're ready to deploy! Go back to the __Deploy__ section.
-14. Scroll to the bottom, and under "Manual deploy", click on "Deploy Branch". 
-15. If you get a "Your app was successfully deployed", congratulations, you are done, and your app should be running!
-16. To verify, open up https://{{{YOUR_APP_NAME}}}.herokuapp.com in a new tab and see if it returns a correctly formed landing page.
+13. Add another Buildpack from the officially supported list named "nodejs".
+14. Now, you're ready to deploy! Go back to the __Deploy__ section.
+15. Scroll to the bottom, and under "Manual deploy", click on "Deploy Branch". 
+16. If you get a "Your app was successfully deployed", congratulations, you are done, and your app should be running!
+17. To verify, open up https://{{{YOUR_APP_NAME}}}.herokuapp.com in a new tab and see if it returns a correctly formed landing page.
