@@ -10,11 +10,11 @@
         "start": "node app.js"
     },
     "dependencies": {
-        "ejs": "2.5.5",
-        "express": "4.13.3",
-        "ytdl-core": "0.9.1",
-        "fluent-ffmpeg": "2.1.0",
-        "youtube-search": "1.0.10"
+        "ejs": "2.5.7",
+        "express": "4.16.2",
+        "fluent-ffmpeg": "2.1.2",
+        "youtube-search": "1.0.10",
+        "ytdl-core": "0.20.1"
     },
     "repository": {
         "type": "git",
