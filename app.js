@@ -69,7 +69,7 @@ app.get('/alexa-search/:query', function(req, res) {
 
       if (!(id in cache)) {
         // Get URLs: temporary file for YTDL direct download, output file for processed audio
-        var tmp_url = path.join(__dirname, 'tmp', id + '.mp3');
+        var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
         var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
 
         // Create writer to temporary file
@@ -88,7 +88,7 @@ app.get('/alexa-search/:query', function(req, res) {
 
         // Use ytdl to write original file
         ytdl(orig_url, {
-          filter: (format) => format.container === 'mp3'
+          filter: 'audioonly'
         }).pipe(writer);
 
         // Mark the video as 'not downloaded' in the cache
