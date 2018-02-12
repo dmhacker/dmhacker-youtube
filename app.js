@@ -45,17 +45,22 @@ app.get('/alexa-search/:query', function(req, res) {
   }, function(err, results) {
     if (err) {
       console.log('An error occurred: '+err.message);
+
+      // Catastrophic error occurred
       res.status(500).json({
         state: 'error',
         message: err.message
       });
     } else if (!results || !results.length) {
       console.log('No results found.');
+
+      // No results found but no error; highly unlikely to occur
       res.status(200).send({
         state: 'error',
         message: 'No results found'
       });
     } else {
+      // Extract metadata from the search results
       var metadata = results[0];
       var id = metadata.id;
       var orig_url = 'https://www.youtube.com/watch?v='+id;
@@ -63,25 +68,34 @@ app.get('/alexa-search/:query', function(req, res) {
       console.log('Query result: '+metadata.title);
 
       if (!(id in cache)) {
-        var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
+        // Get URLs: temporary file for YTDL direct download, output file for processed audio
+        var tmp_url = path.join(__dirname, 'tmp', id + '.mp3');
         var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
+
+        // Create writer to temporary file
         var writer = fs.createWriteStream(tmp_url);
+
+        // When the writer finishes, pipe output to ffmpeg for final processing
         writer.on('finish', function() {
           ffmpeg(tmp_url)
             .format("mp3")
-            .audioBitrate(128)
+            .audioBitrate(128) // Alexa supports this bitrate
             .on('end', function(){
               cache[id]['downloaded'] = true;
             })
             .save(new_url);
         });
+
+        // Use ytdl to write original file
         ytdl(orig_url, {
-          filter: 'audioonly'
+          filter: (format) => format.container === 'mp3'
         }).pipe(writer);
 
+        // Mark the video as 'not downloaded' in the cache
         cache[id] = { downloaded: false };
       }
 
+      // Return correctly and download the audio in the background
       res.status(200).json({
         state: 'success',
         message: 'Uploaded successfully.',
