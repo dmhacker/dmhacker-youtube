@@ -1,6 +1,6 @@
 {
     "name": "dmhacker-youtube",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Proxy server tailored to fetch youtube videos",
     "engines": {
         "node": "5.9.1"
@@ -12,8 +12,8 @@
     "dependencies": {
         "ejs": "2.5.5",
         "express": "4.13.3",
-        "ytdl-core": "0.9.1",
-        "fluent-ffmpeg": "2.1.0",
+        "ytdl-core": "0.20.1",
+        "fluent-ffmpeg": "2.1.2",
         "youtube-search": "1.0.10"
     },
     "repository": {
