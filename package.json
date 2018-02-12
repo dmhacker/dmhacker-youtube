@@ -3,15 +3,15 @@
     "version": "0.1.0",
     "description": "Proxy server tailored to fetch youtube videos",
     "engines": {
-        "node": "5.9.1"
+        "node": "8.9.3"
     },
     "main": "app.js",
     "scripts": {
         "start": "node app.js"
     },
     "dependencies": {
-        "ejs": "2.5.5",
-        "express": "4.13.3",
+        "ejs": "2.5.7",
+        "express": "4.16.2",
         "ytdl-core": "0.20.1",
         "fluent-ffmpeg": "2.1.2",
         "youtube-search": "1.0.10"
