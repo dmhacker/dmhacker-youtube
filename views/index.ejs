@@ -39,10 +39,6 @@
         body {
             background-color: whitesmoke;
         }
-
-        ul {
-            list-style-type: none;
-        }
     </style>
 </head>
 
@@ -106,7 +102,20 @@
                         <span class="card-title">History</span>
                         <div class="row">
                             <div class="col s12">
-                                <li ng-repeat="historyItem in history">{{historyItem.id}} — {{historyItem.title}}</li>
+                                <table>
+                                    <thead>
+                                        <th>
+                                            <tr>Video ID</tr>
+                                            <tr>Video Title</tr>
+                                        </th>
+                                    </thead>
+                                    </tbody>
+                                        <td ng-repeat="historyItem in history">
+                                            <tr>{{historyItem.id}}</tr>
+                                            <tr>{{historyItem.title}}</tr>
+                                        </td>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="row">
