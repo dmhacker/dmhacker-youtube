@@ -105,15 +105,15 @@
                                 <table>
                                     <thead>
                                         <th>
-                                            <tr>Video ID</tr>
-                                            <tr>Video Title</tr>
+                                            <td>Video ID</td>
+                                            <td>Video Title</td>
                                         </th>
                                     </thead>
                                     <tbody>
-                                        <td ng-repeat="historyItem in history">
-                                            <tr>{{historyItem.id}}</tr>
-                                            <tr>{{historyItem.title}}</tr>
-                                        </td>
+                                        <tr ng-repeat="historyItem in history">
+                                            <td>{{historyItem.id}}</td>
+                                            <td>{{historyItem.title}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
