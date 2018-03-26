@@ -5,28 +5,27 @@ var ytdl = require('ytdl-core');
 var ytsearch = require('youtube-search');
 var ffmpeg = require('fluent-ffmpeg');
 
+// Create express server
 var app = express();
 
-var mkdirs = ['./public/site', './tmp'];
-for (var i in mkdirs) {
-  var dir = mkdirs[i];
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-}
-
+// Set server port
 app.set('port', (process.env.PORT || 5000));
 
+// Set express static folder
 app.use(express.static(__dirname + '/public'));
 
+// Set express view engine
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+// Configure base route
 app.get('/', function(request, response) {
   response.render('index');
 });
 
 //////////////////////////// ALEXA ROUTES ////////////////////////////
+
+const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
 var cache = {};
 
@@ -35,9 +34,8 @@ app.get('/alexa-search/:query', function(req, res) {
   var query = new Buffer(req.params.query, 'base64').toString();
   var lang = req.query.language || 'en';
 
-  // Log query
-  console.log('Query from ' +
-    req.connection.remoteAddress + ': [' + lang + '] ' +  query);
+  console.log('Query from ' + req.connection.remoteAddress +
+    ': [' + lang + '] ' +  query);
 
   // Perform search
   ytsearch(query, {
@@ -47,7 +45,7 @@ app.get('/alexa-search/:query', function(req, res) {
     key: process.env.YOUTUBE_API_KEY
   }, function(err, results) {
     if (err) {
-      console.log('An error occurred: '+err.message);
+      console.error('An error occurred: '+err.message);
 
       // Catastrophic error occurred
       res.status(500).json({
@@ -66,53 +64,35 @@ app.get('/alexa-search/:query', function(req, res) {
       // Extract metadata from the search results
       var metadata = results[0];
       var id = metadata.id;
-      var orig_url = 'https://www.youtube.com/watch?v=' + id;
+      var title = metadata.title;
 
-      // Log query result
-      console.log('Query result: ' + metadata.title);
+      console.log('Query result: ' + title);
 
       if (!(id in cache)) {
-        // Mark the video as 'not downloaded' in the cache
+        console.log("Starting download ... " + title);
+
+        // Mark video as 'not downloaded' in the cache
         cache[id] = { downloaded: false };
 
-        // Temporary file for YTDL direct download
-        var tmp_url = path.join(__dirname, 'tmp', id + '.mp3');
-
         // Output file for processed audio
-        var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
+        var output_file = path.join(__dirname, 'public', 'site', id + '.mp3');
 
-        // Create writer to temporary file
-        var writer = fs.createWriteStream(tmp_url);
-
-        /*
-        // Pipe output to ffmpeg for final processing once writer is done
-        writer.on('finish', function() {
-          ffmpeg(tmp_url)
-            .format("mp3")
-            .audioBitrate(128) // Alexa supports this bitrate
-            .on('end', function(){
-              cache[id]['downloaded'] = true;
-            })
-            .save(new_url);
-        });
-
-        // Use ytdl to write original file
-        ytdl(orig_url, {
-          filter: 'audioonly'
-        }).pipe(writer);
-        */
-
-        var stream = ytdl(orig_url, {
+        // Create ytdl stream
+        var stream = ytdl(YOUTUBE_URL_PREFIX + id, {
           filter: 'audioonly'
         });
 
+        // Use ffmpeg to process the stream during download
         ffmpeg(stream)
           .format("mp3")
           .audioBitrate(128) // Alexa supports this bitrate
           .on('end', function(){
+            console.log("Finished download ... " + title);
+
+            // Mark video as completed
             cache[id]['downloaded'] = true;
           })
-          .save(new_url);
+          .save(output_file);
       }
 
       // Return correctly and download the audio in the background
@@ -220,6 +200,7 @@ app.get('/search/:query', function(req, res) {
 
 //////////////////////////////////////////////////////////////////////////
 
+// Start the application!
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
