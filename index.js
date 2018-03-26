@@ -76,7 +76,7 @@ app.get('/alexa-search/:query', function(req, res) {
         cache[id] = { downloaded: false };
 
         // Output file for processed audio
-        var output_file = path.join(__dirname, 'public', 'site', id + '.mp3');
+        var output_file = path.join(__dirname, 'public', 'site', id + '.m4a');
 
         // Create writer to output file
         var writer = fs.createWriteStream(output_file);
@@ -90,7 +90,7 @@ app.get('/alexa-search/:query', function(req, res) {
         // Create ytdl stream
         ytdl(url, {
           filter: 'audioonly',
-          quality: '5'
+          quality: '140'
         }).pipe(writer);
 
         /*
