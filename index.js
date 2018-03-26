@@ -72,6 +72,9 @@ app.get('/alexa-search/:query', function(req, res) {
       console.log('Query result: ' + metadata.title);
 
       if (!(id in cache)) {
+        // Mark the video as 'not downloaded' in the cache
+        cache[id] = { downloaded: false };
+
         // Temporary file for YTDL direct download
         var tmp_url = path.join(__dirname, 'tmp', id + '.mp3');
 
@@ -81,6 +84,7 @@ app.get('/alexa-search/:query', function(req, res) {
         // Create writer to temporary file
         var writer = fs.createWriteStream(tmp_url);
 
+        /*
         // Pipe output to ffmpeg for final processing once writer is done
         writer.on('finish', function() {
           ffmpeg(tmp_url)
@@ -96,9 +100,19 @@ app.get('/alexa-search/:query', function(req, res) {
         ytdl(orig_url, {
           filter: 'audioonly'
         }).pipe(writer);
+        */
 
-        // Mark the video as 'not downloaded' in the cache
-        cache[id] = { downloaded: false };
+        var stream = ytdl(orig_url, {
+          filter: 'audioonly'
+        });
+
+        ffmpeg(stream)
+          .format("mp3")
+          .audioBitrate(128) // Alexa supports this bitrate
+          .on('end', function(){
+            cache[id]['downloaded'] = true;
+          })
+          .save(new_url);
       }
 
       // Return correctly and download the audio in the background
