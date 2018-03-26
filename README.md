@@ -16,9 +16,9 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 7. Now, go to the __Settings__ section on your app's dashboard.
     1. Under `Config Variables`, click on "Reveal Config Vars" and then enter in the following key-value pair(s):
 
-    | Key                  | Value                                                                 |
-    | -------------------- | --------------------------------------------------------------------- |
-    | YOUTUBE_API_KEY      | the YouTube API key you generated earlier                             |
+        | Key                  | Value                                                                 |
+        | -------------------- | --------------------------------------------------------------------- |
+        | YOUTUBE_API_KEY      | the YouTube API key you generated earlier                             |
 
     2. Next, under `Buildpacks`, click on "Add buildpack". When prompted, copy-paste this link into the input section: https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
     3. Add another buildpack from the officially supported list named "nodejs".
