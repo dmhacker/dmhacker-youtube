@@ -2,9 +2,13 @@
 
 This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker/alexa-youtube-skill) as well as a web-based, Youtube-specific proxy.
 
-Before setting up anything, follow [this blog post](https://elfsight.com/blog/2016/12/how-to-get-youtube-api-key-tutorial/) to obtain a YouTube API key. Save it for now, because it will come in use later.
+## Prerequisites
 
-## Automatic Setup Process
+Before setting up anything, follow [this blog post](https://elfsight.com/blog/2016/12/how-to-get-youtube-api-key-tutorial/) to obtain a YouTube API key.
+
+Save it for now, because it will come in use later.
+
+## Automatic Setup Process (recommended)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
