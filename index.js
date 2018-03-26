@@ -65,6 +65,7 @@ app.get('/alexa-search/:query', function(req, res) {
       var metadata = results[0];
       var id = metadata.id;
       var title = metadata.title;
+      var url = YOUTUBE_URL_PREFIX + id;
 
       console.log('Query result: ' + title);
 
@@ -78,7 +79,7 @@ app.get('/alexa-search/:query', function(req, res) {
         var output_file = path.join(__dirname, 'public', 'site', id + '.mp3');
 
         // Create ytdl stream
-        var stream = ytdl(YOUTUBE_URL_PREFIX + id, {
+        var stream = ytdl(url, {
           filter: 'audioonly'
         });
 
@@ -103,7 +104,7 @@ app.get('/alexa-search/:query', function(req, res) {
         info: {
           id: id,
           title: metadata.title,
-          original: orig_url
+          original: url
         }
       });
     }
