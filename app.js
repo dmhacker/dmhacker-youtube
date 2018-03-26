@@ -31,12 +31,15 @@ app.get('/', function(request, response) {
 var cache = {};
 
 app.get('/alexa-search/:query', function(req, res) {
+  // Extract query and language (English is default)
   var query = new Buffer(req.params.query, 'base64').toString();
   var lang = req.query.language || 'en';
-  if (lang !== 'en' || lang !== 'de') {
-    lang = 'en';
-  }
-  console.log('Query from ' + req.connection.remoteAddress + ': '+query);
+
+  // Log query
+  console.log('Query from ' +
+    req.connection.remoteAddress + ': [' + lang + '] ' +  query);
+
+  // Perform search
   ytsearch(query, {
     maxResults: 1,
     type: 'video',
@@ -63,19 +66,22 @@ app.get('/alexa-search/:query', function(req, res) {
       // Extract metadata from the search results
       var metadata = results[0];
       var id = metadata.id;
-      var orig_url = 'https://www.youtube.com/watch?v='+id;
+      var orig_url = 'https://www.youtube.com/watch?v=' + id;
 
-      console.log('Query result: '+metadata.title);
+      // Log query result
+      console.log('Query result: ' + metadata.title);
 
       if (!(id in cache)) {
-        // Get URLs: temporary file for YTDL direct download, output file for processed audio
-        var tmp_url = path.join(__dirname, 'tmp', id + '.mp4');
+        // Temporary file for YTDL direct download
+        var tmp_url = path.join(__dirname, 'tmp', id + '.mp3');
+
+        // Output file for processed audio
         var new_url = path.join(__dirname, 'public', 'site', id + '.mp3');
 
         // Create writer to temporary file
         var writer = fs.createWriteStream(tmp_url);
 
-        // When the writer finishes, pipe output to ffmpeg for final processing
+        // Pipe output to ffmpeg for final processing once writer is done
         writer.on('finish', function() {
           ffmpeg(tmp_url)
             .format("mp3")
@@ -114,6 +120,7 @@ app.get('/alexa-check/:id', function(req, res) {
   var id = req.params.id;
   if (id in cache) {
     if (cache[id]['downloaded']) {
+      // Video is done downloading
       res.status(200).send({
         state: 'success',
         message: 'Downloaded',
@@ -121,6 +128,7 @@ app.get('/alexa-check/:id', function(req, res) {
       });
     }
     else {
+      // Video was queried but is still being downloaded
       res.status(200).send({
         state: 'success',
         message: 'Download in progress',
@@ -129,6 +137,7 @@ app.get('/alexa-check/:id', function(req, res) {
     }
   }
   else {
+    // No video corresponding to that ID was queried
     res.status(200).send({
       state: 'success',
       message: 'Not in cache'
@@ -194,6 +203,8 @@ app.get('/search/:query', function(req, res) {
     }
   });
 });
+
+//////////////////////////////////////////////////////////////////////////
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
