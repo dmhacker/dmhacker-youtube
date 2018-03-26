@@ -78,11 +78,22 @@ app.get('/alexa-search/:query', function(req, res) {
         // Output file for processed audio
         var output_file = path.join(__dirname, 'public', 'site', id + '.mp3');
 
-        // Create ytdl stream
-        var stream = ytdl(url, {
-          filter: 'audioonly'
+        // Create writer to output file
+        var writer = fs.createWriteStream(output_file);
+        writer.on('finish', function() {
+            console.log("Finished download ... " + title);
+
+            // Mark video as completed
+            cache[id]['downloaded'] = true;
         });
 
+        // Create ytdl stream
+        ytdl(url, {
+          filter: 'audioonly',
+          quality: '140'
+        }).pipe(writer);
+
+        /*
         // Use ffmpeg to process the stream during download
         ffmpeg(stream)
           .format("mp3")
@@ -94,6 +105,7 @@ app.get('/alexa-search/:query', function(req, res) {
             cache[id]['downloaded'] = true;
           })
           .save(output_file);
+        */
       }
 
       // Return correctly and download the audio in the background
