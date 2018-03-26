@@ -112,7 +112,7 @@ app.get('/alexa-search/:query', function(req, res) {
       res.status(200).json({
         state: 'success',
         message: 'Uploaded successfully.',
-        link: '/site/' + id + '.mp3',
+        link: '/site/' + id + '.m4a',
         info: {
           id: id,
           title: metadata.title,
