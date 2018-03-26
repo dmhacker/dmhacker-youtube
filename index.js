@@ -86,7 +86,7 @@ app.get('/alexa-search/:query', function(req, res) {
         // Use ffmpeg to process the stream during download
         ffmpeg(stream)
           .format("mp3")
-          .audioBitrate(48) // Alexa supports this bitrate
+          .audioBitrate(128) // Alexa supports this bitrate
           .on('end', function(){
             console.log("Finished download ... " + title);
 
