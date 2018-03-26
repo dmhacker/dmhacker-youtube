@@ -1,0 +1,23 @@
+{
+  "name": "dmhacker-youtube",
+  "description": "YouTube proxy that can fetch and play videos",
+  "repository": "https://github.com/dmhacker/dmhacker-youtube",
+  "logo": "https://commons.wikimedia.org/wiki/File:Amazon_Alexa_App_Logo.png",
+  "keywords": [
+      "node",
+      "heroku",
+      "express",
+      "proxy",
+      "youtube"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "YOUTUBE_API_KEY": {
+      "description": "Provide your own YouTube API key here! This application will not work without a valid key."
+    }
+  }
+}
