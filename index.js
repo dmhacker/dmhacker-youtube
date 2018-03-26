@@ -23,9 +23,9 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-//////////////////////////// ALEXA ROUTES ////////////////////////////
-
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
+
+//////////////////////////// ALEXA ROUTES ////////////////////////////
 
 var cache = {};
 
@@ -45,7 +45,7 @@ app.get('/alexa-search/:query', function(req, res) {
     key: process.env.YOUTUBE_API_KEY
   }, function(err, results) {
     if (err) {
-      console.error('An error occurred: '+err.message);
+      console.error('An error occurred: ' + err.message);
 
       // Catastrophic error occurred
       res.status(500).json({
@@ -145,16 +145,21 @@ app.get('/alexa-check/:id', function(req, res) {
 
 function fetch_target_id(req, res) {
   var id = req.params.id;
-  var old_url = 'https://www.youtube.com/watch?v=' + id;
-  ytdl.getInfo(old_url, function(err, info) {
+  var url = YOUTUBE_URL_PREFIX + id;
+
+  // Fetch information about the video first
+  ytdl.getInfo(url, function(err, info) {
     if (err) {
       res.status(500).json({
         state: 'error',
         message: err.message
       });
     } else {
-      var new_url = path.join(__dirname, 'public', 'site', id + '.mp4');
-      var writer = fs.createWriteStream(new_url);
+      // Get output file
+      var output_file = path.join(__dirname, 'public', 'site', id + '.mp4');
+      var writer = fs.createWriteStream(output_file);
+
+      // Writer sends response back after finishing
       writer.on('finish', function() {
         res.status(200).json({
           state: 'success',
@@ -165,7 +170,9 @@ function fetch_target_id(req, res) {
           }
         });
       });
-      ytdl(old_url).pipe(writer);
+
+      // Pipe out of ytdl stream to the file writer
+      ytdl(url).pipe(writer);
     }
   });
 }
@@ -173,26 +180,31 @@ function fetch_target_id(req, res) {
 app.get('/target/:id', fetch_target_id);
 
 app.get('/search/:query', function(req, res) {
+  // Extract query from request
   var query = req.params.query;
+
+  // Search YouTube for query
   ytsearch(query, {
     maxResults: 1,
     type: 'video',
     key: process.env.YOUTUBE_API_KEY
   }, function(err, results) {
     if (err) {
+      // An error occurred while searching for the video
       res.status(500).json({
         state: 'error',
         message: err.message
       });
     } else {
       if (!results || !results.length) {
+        // No video found for that query
         res.status(200).send({
           state: 'error',
           message: 'No results found'
         });
       } else {
-        var id = results[0].id;
-        req.params.id = id;
+        // Pass request handling to download function
+        req.params.id = results[0].id;
         fetch_target_id(req, res);
       }
     }
