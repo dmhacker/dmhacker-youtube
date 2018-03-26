@@ -3,7 +3,6 @@ var fs = require('fs');
 var path = require('path');
 var ytdl = require('ytdl-core');
 var ytsearch = require('youtube-search');
-var ffmpeg = require('fluent-ffmpeg');
 
 // Create express server
 var app = express();
@@ -75,37 +74,23 @@ app.get('/alexa-search/:query', function(req, res) {
         // Mark video as 'not downloaded' in the cache
         cache[id] = { downloaded: false };
 
-        // Output file for processed audio
+        // Create writer to output file for downloaded audio
         var output_file = path.join(__dirname, 'public', 'site', id + '.m4a');
-
-        // Create writer to output file
         var writer = fs.createWriteStream(output_file);
+
+        // Pass writer stream to ytdl
+        ytdl(url, {
+          filter: 'audioonly',
+          quality: '140'
+        }).pipe(writer);
+
+        // Mark video as downloaded once writer is finished
         writer.on('finish', function() {
             console.log("Finished download ... " + title);
 
             // Mark video as completed
             cache[id]['downloaded'] = true;
         });
-
-        // Create ytdl stream
-        ytdl(url, {
-          filter: 'audioonly',
-          quality: '140'
-        }).pipe(writer);
-
-        /*
-        // Use ffmpeg to process the stream during download
-        ffmpeg(stream)
-          .format("mp3")
-          .audioBitrate(128) // Alexa supports this bitrate
-          .on('end', function(){
-            console.log("Finished download ... " + title);
-
-            // Mark video as completed
-            cache[id]['downloaded'] = true;
-          })
-          .save(output_file);
-        */
       }
 
       // Return correctly and download the audio in the background
