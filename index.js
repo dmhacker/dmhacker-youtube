@@ -90,7 +90,7 @@ app.get('/alexa-search/:query', function(req, res) {
         // Create ytdl stream
         ytdl(url, {
           filter: 'audioonly',
-          quality: '140'
+          quality: '5'
         }).pipe(writer);
 
         /*
