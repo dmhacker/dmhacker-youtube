@@ -1,20 +1,20 @@
 {
     "name": "dmhacker-youtube",
-    "version": "0.1.0",
-    "description": "Proxy server tailored to fetch youtube videos",
+    "version": "1.0.0",
+    "description": "YouTube proxy that can fetch and play videos",
     "engines": {
         "node": "8.9.3"
     },
-    "main": "app.js",
+    "main": "index.js",
     "scripts": {
-        "start": "node app.js"
+        "start": "node index.js"
     },
     "dependencies": {
-        "ejs": "2.5.7",
-        "express": "4.16.2",
-        "ytdl-core": "0.20.1",
+        "ejs": "2.5.8",
+        "express": "4.16.3",
+        "ytdl-core": "0.20.2",
         "fluent-ffmpeg": "2.1.2",
-        "youtube-search": "1.0.10"
+        "youtube-search": "1.1.0"
     },
     "repository": {
         "type": "git",
