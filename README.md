@@ -21,7 +21,7 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
         | YOUTUBE_API_KEY      | the YouTube API key you generated earlier                             |
 
     2. Next, under `Buildpacks`, click on "Add buildpack".
-    3. Add a buildpack from the officially supported list named "nodejs".
+    3. Select the icon named "nodejs" under the officially supported list of buildpacks.
 8. Now, you're ready to deploy! Go back to the __Deploy__ section.
     1. Under `Manual Deploy`, click on "Deploy Branch".
 9. If you get a "Your app was successfully deployed", congratulations, you are done, and your app should be running!
