@@ -4,9 +4,7 @@ This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker
 
 ## Prerequisites
 
-Before setting up anything, follow [this blog post](https://elfsight.com/blog/2016/12/how-to-get-youtube-api-key-tutorial/) to obtain a YouTube API key.
-
-Save it for now, because it will come in use later.
+Before setting up anything, follow [this blog post](https://elfsight.com/blog/2016/12/how-to-get-youtube-api-key-tutorial/) to obtain a YouTube API key. It will come in use later.
 
 ## Automatic Setup Process (recommended)
 
