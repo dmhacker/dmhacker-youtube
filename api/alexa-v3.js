@@ -63,6 +63,7 @@ module.exports = function(app, cache, log) {
   app.get('/alexa/v3/download/:id', function(req, res) {
     // Extract video ID from query
     var id = req.params.id;
+    var url = YOUTUBE_URL_PREFIX + id;
 
     // Setup logging 
     var log_function = log.get("download-v3")
