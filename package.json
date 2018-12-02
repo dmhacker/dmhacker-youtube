@@ -3,7 +3,7 @@
     "version": "2.0.0",
     "description": "YouTube proxy that can fetch and play videos",
     "engines": {
-        "node": "10.13.0"
+        "node": "8.9.3"
     },
     "main": "index.js",
     "scripts": {
