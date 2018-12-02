@@ -18,7 +18,7 @@ function fetch_target_id(req, res) {
       });
     } else {
       // Get output file
-      var output_file = path.join(__dirname, 'public', 'site', id + '.mp4');
+      var output_file = path.join(__dirname, '..', 'public', 'site', id + '.mp4');
       var writer = fs.createWriteStream(output_file);
 
       // Writer sends response back after finishing

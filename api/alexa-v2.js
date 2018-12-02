@@ -58,7 +58,7 @@ module.exports = function(app, cache, log) {
           cache[id] = { downloaded: false };
 
           // Create writer to output file for downloaded audio
-          var output_file = path.join(__dirname, 'public', 'site', id + '.m4a');
+          var output_file = path.join(__dirname, '..', 'public', 'site', id + '.m4a');
           var writer = fs.createWriteStream(output_file);
 
           // Pass writer stream to ytdl
