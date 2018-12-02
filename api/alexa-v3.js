@@ -67,7 +67,7 @@ module.exports = function(app, cache, log) {
     // Setup logging 
     var log_function = log.get("download-v3")
     var log_header = req.connection.remoteAddress + ': '
-    log_function.info(log_header + "Scheduled download is '" + query + "'");
+    log_function.info(log_header + "Download requested for video with ID '" + id + "'");
 
     if (id in cache) {
       log_function.info(log_header + "Cache hit.");
