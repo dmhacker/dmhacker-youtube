@@ -3,7 +3,7 @@ var express = require('express');
 // Load logging utilities
 process.env.LOG_LEVEL = 'info';
 require("log-node")();
-var log = require('log').get('youtube-portal')
+var log = require('log').get('youtube-proxy')
 
 // Create express server
 var app = express();
