@@ -1,6 +1,4 @@
 var express = require('express');
-var fs = require('fs');
-var path = require('path');
 
 // Load logging utilities
 process.env.LOG_LEVEL = 'info';

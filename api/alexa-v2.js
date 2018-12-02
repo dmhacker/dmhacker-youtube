@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path');
 var ytdl = require('ytdl-core');
 var ytsearch = require('youtube-search');
 
