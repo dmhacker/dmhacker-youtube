@@ -13,7 +13,9 @@
         "ejs": "2.5.8",
         "express": "4.16.3",
         "ytdl-core": "0.20.2",
-        "youtube-search": "1.1.0"
+        "youtube-search": "1.1.0",
+        "log": "3.2.0",
+        "log-node": "3.2.1"
     },
     "repository": {
         "type": "git",
