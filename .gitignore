@@ -10,3 +10,8 @@ npm-debug.log
 # Docker
 Dockerfile
 docker-compose.yml
+
+# Video or audio files 
+*.mp4
+*.mp3
+*.wav

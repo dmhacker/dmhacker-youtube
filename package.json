@@ -10,12 +10,12 @@
         "start": "node index.js"
     },
     "dependencies": {
-        "ejs": "2.7.1",
-        "express": "4.17.1",
-        "ytdl-core": "0.29.7",
-        "youtube-search": "1.1.4",
-        "log": "6.0.0",
-        "log-node": "7.0.0"
+        "ejs": "^3.1.2",
+        "express": "^4.17.1",
+        "log": "^6.0.0",
+        "log-node": "^7.0.0",
+        "youtube-search": "^1.1.4",
+        "ytdl-core": "^2.1.1"
     },
     "repository": {
         "type": "git",
