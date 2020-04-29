@@ -2,7 +2,7 @@
   "name": "dmhacker-youtube",
   "description": "YouTube proxy that can fetch and play videos",
   "repository": "https://github.com/dmhacker/dmhacker-youtube",
-  "logo": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Amazon_Alexa_App_Logo.png",
+  "logo": "https://raw.githubusercontent.com/dmhacker/dmhacker-youtube/master/logo.png",
   "keywords": [
       "node",
       "heroku",
