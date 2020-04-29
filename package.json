@@ -1,9 +1,9 @@
 {
     "name": "dmhacker-youtube",
-    "version": "2.0.1",
+    "version": "3.0.0",
     "description": "YouTube proxy that can fetch and play videos",
     "engines": {
-        "node": "10.16.3"
+        "node": "12.16.3"
     },
     "main": "index.js",
     "scripts": {
@@ -14,7 +14,6 @@
         "express": "^4.17.1",
         "log": "^6.0.0",
         "log-node": "^7.0.0",
-        "youtube-search": "^1.1.4",
         "yt-search": "^1.1.2",
         "ytdl-core": "^2.1.1"
     },
