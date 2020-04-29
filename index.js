@@ -27,9 +27,9 @@ app.get('/', function(request, response) {
 var cache = {};
 
 // Load APIs in separate files 
-require('./api/alexa-v3.js')(app, cache, log);
-require('./api/alexa-v2.js')(app, cache, log);
-require('./api/regular-player.js')(app);
+require('./api/alexa_v3.js')(app, cache, log);
+require('./api/alexa_v2.js')(app, cache, log);
+require('./api/web_player.js')(app);
 
 // Start the application!
 app.listen(app.get('port'), function() {

@@ -15,6 +15,7 @@
         "log": "^6.0.0",
         "log-node": "^7.0.0",
         "youtube-search": "^1.1.4",
+        "yt-search": "^1.1.2",
         "ytdl-core": "^2.1.1"
     },
     "repository": {
